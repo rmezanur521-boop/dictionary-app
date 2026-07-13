@@ -1,0 +1,16 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    prefer_const_constructors: true
+    prefer_final_locals: true
+    avoid_print: true
+    unnecessary_this: true
+    prefer_single_quotes: true
+    always_declare_return_types: true
+    annotate_overrides: true
+    sort_child_properties_last: true
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"

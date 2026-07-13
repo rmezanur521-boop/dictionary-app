@@ -1,0 +1,62 @@
+name: dictionary_app
+description: >
+  An Offline-First English-Bangla Dictionary application built with Flutter,
+  featuring a preloaded 50,000-word SQLite database, online enrichment via
+  the Free Dictionary API, text-to-speech, favorites, search history, and
+  Material 3 theming.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # ── UI / Design ──────────────────────────────────────────────
+  cupertino_icons: ^1.0.8            # iOS-style icons where relevant
+
+  # ── State Management ─────────────────────────────────────────
+  provider: ^6.1.2                   # MVVM ViewModel layer (ChangeNotifier)
+
+  # ── Local Persistence ────────────────────────────────────────
+  sqflite: ^2.4.1                    # SQLite engine for the 50k-word local DB
+  path: ^1.9.0                       # path joining for DB file location
+  path_provider: ^2.1.5              # locate app documents directory (DB copy target)
+  shared_preferences: ^2.3.3         # theme mode, first-run flag, last sync info
+
+  # ── Networking ───────────────────────────────────────────────
+  http: ^1.2.2                       # Free Dictionary API calls
+  connectivity_plus: ^6.1.0          # online/offline detection (added per Step 1.3, confirmed)
+
+  # ── Text To Speech ───────────────────────────────────────────
+  flutter_tts: ^4.2.0                # pronunciation playback (English + best-effort Bangla)
+
+  # ── Utilities ─────────────────────────────────────────────────
+  intl: ^0.19.0                      # date formatting for Daily Word / LastUpdated
+  package_info_plus: ^8.1.2          # App Version shown in Settings/About
+  share_plus: ^10.1.3                # optional: share a word's meaning (nice-to-have, low cost)
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  mockito: ^5.4.4
+  build_runner: ^2.4.13             # standard lint rules, enforces clean code style
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/db/dictionary_preloaded.db
+    - assets/images/splash_logo.png
+    - assets/images/app_icon.png
+
+  # Uncomment if a Bangla-friendly font is added (recommended for correct Bangla glyph rendering)
+  fonts:
+    - family: NotoSansBengali
+      fonts:
+        - asset: assets/fonts/NotoSansBengali-Regular.ttf
+        - asset: assets/fonts/NotoSansBengali-Bold.ttf
+          weight: 700

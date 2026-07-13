@@ -1,0 +1,8 @@
+# Copy this to android/key.properties (gitignored) and fill in real values
+# before building a release APK. Generate a keystore with:
+#   keytool -genkey -v -keystore ~/dictionary-release-key.jks -keyalg RSA \
+#     -keysize 2048 -validity 10000 -alias dictionary_app
+storePassword=YOUR_STORE_PASSWORD
+keyPassword=YOUR_KEY_PASSWORD
+keyAlias=dictionary_app
+storeFile=/absolute/path/to/dictionary-release-key.jks
