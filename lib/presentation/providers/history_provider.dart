@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../../domain/entities/history_entity.dart';
 import '../../domain/repositories/history_repository.dart';
 
-enum LoadStatus { loading, success, empty, error }
+import '../../core/enums/load_status.dart';
 
 class HistoryProvider extends ChangeNotifier {
   HistoryProvider(this._historyRepository);

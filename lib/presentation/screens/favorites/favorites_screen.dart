@@ -1,7 +1,6 @@
-```dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import '../../../core/enums/load_status.dart';
 import '../../../core/routes/app_router.dart';
 import '../../../domain/entities/word_entity.dart';
 import '../../providers/favorites_provider.dart';
@@ -144,4 +143,3 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     );
   }
 }
-```

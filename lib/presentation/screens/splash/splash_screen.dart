@@ -19,6 +19,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  String? _errorMessage;
+
   @override
   void initState() {
     super.initState();
@@ -28,9 +30,15 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _initialize() async {
     final stopwatch = Stopwatch()..start();
 
-    // Triggers DatabaseHelper's lazy singleton init (asset copy on
-    // first run, or open existing DB on subsequent runs).
-    await DatabaseHelper.instance.database;
+    try {
+      // Triggers DatabaseHelper's lazy singleton init (asset copy on
+      // first run, or open existing DB on subsequent runs).
+      await DatabaseHelper.instance.database;
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _errorMessage = 'Could not start the database:\n$e');
+      return;
+    }
 
     // Enforce a minimum splash duration so the branding is visible
     // even on fast devices where DB open takes <100ms — avoids an
@@ -51,6 +59,29 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
+    if (_errorMessage != null) {
+      return Scaffold(
+        backgroundColor: colorScheme.surface,
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.error_outline, size: 48, color: colorScheme.error),
+                const SizedBox(height: 16),
+                Text(
+                  _errorMessage!,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: colorScheme.surface,
       body: Center(
@@ -64,10 +95,12 @@ class _SplashScreenState extends State<SplashScreen> {
                 color: colorScheme.primaryContainer,
                 borderRadius: BorderRadius.circular(24),
               ),
-              child: Icon(Icons.menu_book_rounded, size: 48, color: colorScheme.onPrimaryContainer),
+              child: Icon(Icons.menu_book_rounded,
+                  size: 48, color: colorScheme.onPrimaryContainer),
             ),
             const SizedBox(height: 24),
-            Text(AppConstants.appName, style: Theme.of(context).textTheme.titleLarge),
+            Text(AppConstants.appName,
+                style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: 8),
             Text(
               'English ⇄ বাংলা Dictionary',
@@ -77,7 +110,8 @@ class _SplashScreenState extends State<SplashScreen> {
             SizedBox(
               width: 28,
               height: 28,
-              child: CircularProgressIndicator(strokeWidth: 2.5, color: colorScheme.primary),
+              child: CircularProgressIndicator(
+                  strokeWidth: 2.5, color: colorScheme.primary),
             ),
           ],
         ),

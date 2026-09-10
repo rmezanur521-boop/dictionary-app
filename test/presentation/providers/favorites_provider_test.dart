@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import 'package:dictionary_app/core/enums/load_status.dart';
 import 'package:dictionary_app/domain/entities/word_entity.dart';
 import 'package:dictionary_app/domain/repositories/favorite_repository.dart';
 import 'package:dictionary_app/presentation/providers/favorites_provider.dart';
@@ -30,13 +31,15 @@ void main() {
     expect(provider.favorites.length, 1);
   });
 
-  test('loadFavorites transitions to empty when repository returns no data', () async {
+  test('loadFavorites transitions to empty when repository returns no data',
+      () async {
     when(repo.getAllFavorites()).thenAnswer((_) async => []);
     await provider.loadFavorites();
     expect(provider.status, LoadStatus.empty);
   });
 
-  test('removeFavorite optimistically removes and returns removed entity', () async {
+  test('removeFavorite optimistically removes and returns removed entity',
+      () async {
     when(repo.getAllFavorites()).thenAnswer((_) async => [
           const WordEntity(id: 1, english: 'cat', bangla: 'বিড়াল'),
         ]);

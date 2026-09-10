@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 
 import '../../core/utils/debouncer.dart';
 import '../../core/utils/language_detector.dart';
-import '../../domain/entities/history_entity.dart';
 import '../../domain/entities/word_entity.dart';
 import '../../domain/repositories/history_repository.dart';
 import '../../domain/repositories/word_repository.dart';

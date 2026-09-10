@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../core/services/sync_status_service.dart';
 
 import '../../../core/routes/app_router.dart';
 import '../../providers/settings_provider.dart';
@@ -27,11 +28,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Clear search history?'),
-        content: const Text('This permanently deletes all recorded searches. Favorites and dictionary data are not affected.'),
+        content: const Text(
+            'This permanently deletes all recorded searches. Favorites and dictionary data are not affected.'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('Cancel')),
           FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: Theme.of(ctx).colorScheme.error),
+            style: FilledButton.styleFrom(
+                backgroundColor: Theme.of(ctx).colorScheme.error),
             onPressed: () => Navigator.pop(ctx, true),
             child: const Text('Clear'),
           ),
@@ -41,7 +46,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (confirmed == true && context.mounted) {
       await context.read<SettingsProvider>().clearSearchHistory();
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Search history cleared')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Search history cleared')));
       }
     }
   }
@@ -54,21 +60,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
         builder: (context, settings, _) {
           return ListView(
             children: [
-              _SectionHeader('Appearance'),
+              const _SectionHeader('Appearance'),
               _buildThemeSelector(context),
               const Divider(),
-
-              _SectionHeader('Data & Sync'),
+              const _SectionHeader('Data & Sync'),
               _buildSyncStatusTile(context),
               ListTile(
                 leading: const Icon(Icons.storage_outlined),
                 title: const Text('Database Information'),
                 subtitle: settings.isLoading
                     ? const Text('Loading...')
-                    : Text('${settings.totalWords} words • ${settings.dbSizeFormatted}'),
+                    : Text(
+                        '${settings.totalWords} words • ${settings.dbSizeFormatted}'),
                 trailing: settings.isLoading
                     ? null
-                    : Text('${settings.syncPercentage.toStringAsFixed(1)}% enriched',
+                    : Text(
+                        '${settings.syncPercentage.toStringAsFixed(1)}% enriched',
                         style: Theme.of(context).textTheme.bodyMedium),
               ),
               ListTile(
@@ -77,8 +84,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onTap: () => _confirmClearHistory(context),
               ),
               const Divider(),
-
-              _SectionHeader('About'),
+              const _SectionHeader('About'),
               ListTile(
                 leading: const Icon(Icons.info_outline),
                 title: const Text('About This App'),
@@ -87,7 +93,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ListTile(
                 leading: const Icon(Icons.system_update_alt_outlined),
                 title: const Text('App Version'),
-                trailing: Text(settings.isLoading ? '...' : settings.appVersion),
+                trailing:
+                    Text(settings.isLoading ? '...' : settings.appVersion),
               ),
               const SizedBox(height: 24),
             ],
@@ -103,12 +110,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: SegmentedButton<ThemeMode>(
         segments: const [
-          ButtonSegment(value: ThemeMode.light, icon: Icon(Icons.light_mode_outlined), label: Text('Light')),
-          ButtonSegment(value: ThemeMode.dark, icon: Icon(Icons.dark_mode_outlined), label: Text('Dark')),
-          ButtonSegment(value: ThemeMode.system, icon: Icon(Icons.brightness_auto_outlined), label: Text('System')),
+          ButtonSegment(
+              value: ThemeMode.light,
+              icon: Icon(Icons.light_mode_outlined),
+              label: Text('Light')),
+          ButtonSegment(
+              value: ThemeMode.dark,
+              icon: Icon(Icons.dark_mode_outlined),
+              label: Text('Dark')),
+          ButtonSegment(
+              value: ThemeMode.system,
+              icon: Icon(Icons.brightness_auto_outlined),
+              label: Text('System')),
         ],
         selected: {themeProvider.themeMode},
-        onSelectionChanged: (selection) => context.read<ThemeProvider>().setThemeMode(selection.first),
+        onSelectionChanged: (selection) =>
+            context.read<ThemeProvider>().setThemeMode(selection.first),
       ),
     );
   }
@@ -131,7 +148,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         icon = Icons.cloud_done_outlined;
         color = Colors.green;
       case SyncEvent.failed:
-        subtitle = 'Sync failed: ${syncStatus.lastUpdate.message ?? "unknown error"}';
+        subtitle =
+            'Sync failed: ${syncStatus.lastUpdate.message ?? "unknown error"}';
         icon = Icons.cloud_off_outlined;
         color = Colors.red;
       case SyncEvent.idle:

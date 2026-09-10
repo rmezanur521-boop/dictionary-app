@@ -5,7 +5,6 @@ import '../../presentation/screens/about/about_screen.dart';
 import '../../presentation/screens/categories/category_words_screen.dart';
 import '../../presentation/screens/daily_word/daily_word_screen.dart';
 import '../../presentation/screens/history/history_screen.dart';
-import '../../presentation/screens/settings/settings_screen.dart';
 import '../../presentation/screens/word_details/word_details_screen.dart';
 
 /// Centralized route name constants + generator. Screens never
@@ -17,7 +16,8 @@ class AppRoutes {
   AppRoutes._();
 
   static const String splash = '/splash';
-  static const String shell = '/'; // bottom-nav host (Home/Search/Favorites/Categories/Settings)
+  static const String shell =
+      '/'; // bottom-nav host (Home/Search/Favorites/Categories/Settings)
   static const String wordDetails = '/word-details';
   static const String categoryWords = '/category-words';
   static const String history = '/history';
@@ -45,13 +45,16 @@ class AppRouter {
         );
 
       case AppRoutes.history:
-        return MaterialPageRoute(builder: (_) => const HistoryScreen(), settings: settings);
+        return MaterialPageRoute(
+            builder: (_) => const HistoryScreen(), settings: settings);
 
       case AppRoutes.dailyWord:
-        return MaterialPageRoute(builder: (_) => const DailyWordScreen(), settings: settings);
+        return MaterialPageRoute(
+            builder: (_) => const DailyWordScreen(), settings: settings);
 
       case AppRoutes.about:
-        return MaterialPageRoute(builder: (_) => const AboutScreen(), settings: settings);
+        return MaterialPageRoute(
+            builder: (_) => const AboutScreen(), settings: settings);
 
       default:
         return MaterialPageRoute(
@@ -66,11 +69,14 @@ class AppRouter {
   /// wrong argument type/shape to pushNamed, which is a common
   /// runtime-only bug with string-based routing.
   static Future<void> openWordDetails(BuildContext context, String searchTerm) {
-    return Navigator.of(context).pushNamed(AppRoutes.wordDetails, arguments: searchTerm);
+    return Navigator.of(context)
+        .pushNamed(AppRoutes.wordDetails, arguments: searchTerm);
   }
 
-  static Future<void> openCategoryWords(BuildContext context, CategoryEntity category) {
-    return Navigator.of(context).pushNamed(AppRoutes.categoryWords, arguments: category);
+  static Future<void> openCategoryWords(
+      BuildContext context, CategoryEntity category) {
+    return Navigator.of(context)
+        .pushNamed(AppRoutes.categoryWords, arguments: category);
   }
 
   static Future<void> openHistory(BuildContext context) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/enums/load_status.dart';
 import '../../../core/routes/app_router.dart';
 import '../../providers/history_provider.dart';
 import '../../widgets/empty_state_widget.dart';
@@ -30,11 +31,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Clear all history?'),
-        content: const Text('This will permanently delete your entire search history. This cannot be undone.'),
+        content: const Text(
+            'This will permanently delete your entire search history. This cannot be undone.'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('Cancel')),
           FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: Theme.of(ctx).colorScheme.error),
+            style: FilledButton.styleFrom(
+                backgroundColor: Theme.of(ctx).colorScheme.error),
             onPressed: () => Navigator.pop(ctx, true),
             child: const Text('Clear All'),
           ),
@@ -68,7 +73,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
             case LoadStatus.loading:
               return const LoadingWidget();
             case LoadStatus.error:
-              return ErrorStateWidget(message: 'Could not load history.', onRetry: provider.loadHistory);
+              return ErrorStateWidget(
+                  message: 'Could not load history.',
+                  onRetry: provider.loadHistory);
             case LoadStatus.empty:
               return const EmptyStateWidget(
                 icon: Icons.history,
@@ -94,7 +101,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       onDismissed: (_) => provider.deleteEntry(entry.id!),
                       child: HistoryTile(
                         entry: entry,
-                        onTap: () => AppRouter.openWordDetails(context, entry.query),
+                        onTap: () =>
+                            AppRouter.openWordDetails(context, entry.query),
                       ),
                     );
                   },

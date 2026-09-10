@@ -3,8 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../../domain/entities/category_entity.dart';
 import '../../domain/entities/word_entity.dart';
 import '../../domain/repositories/category_repository.dart';
-
-enum LoadStatus { loading, success, empty, error }
+import '../../core/enums/load_status.dart';
 
 class CategoryProvider extends ChangeNotifier {
   CategoryProvider(this._categoryRepository);
@@ -30,7 +29,8 @@ class CategoryProvider extends ChangeNotifier {
 
     try {
       _categories = await _categoryRepository.getAllCategories();
-      _categoriesStatus = _categories.isEmpty ? LoadStatus.empty : LoadStatus.success;
+      _categoriesStatus =
+          _categories.isEmpty ? LoadStatus.empty : LoadStatus.success;
     } catch (e) {
       _categoriesStatus = LoadStatus.error;
     }
@@ -43,8 +43,10 @@ class CategoryProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      _categoryWords = await _categoryRepository.getWordsInCategory(category.id!);
-      _wordsStatus = _categoryWords.isEmpty ? LoadStatus.empty : LoadStatus.success;
+      _categoryWords =
+          await _categoryRepository.getWordsInCategory(category.id!);
+      _wordsStatus =
+          _categoryWords.isEmpty ? LoadStatus.empty : LoadStatus.success;
     } catch (e) {
       _wordsStatus = LoadStatus.error;
     }

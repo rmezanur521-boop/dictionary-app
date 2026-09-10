@@ -13,7 +13,8 @@ import 'package:dictionary_app/data/repositories/word_repository_impl.dart';
 
 import 'word_repository_impl_test.mocks.dart';
 
-@GenerateMocks([WordDao, CachedApiDao, DictionaryApiService, ConnectivityService])
+@GenerateMocks(
+    [WordDao, CachedApiDao, DictionaryApiService, ConnectivityService])
 void main() {
   late MockWordDao wordDao;
   late MockCachedApiDao cachedApiDao;
@@ -36,17 +37,20 @@ void main() {
   });
 
   group('getWordDetails — offline-first pipeline', () {
-    test('returns local data immediately when word is already enrichment-complete', () async {
-      final complete = WordModel(
+    test(
+        'returns local data immediately when word is already enrichment-complete',
+        () async {
+      final complete = const WordModel(
         id: 1,
         english: 'apple',
         bangla: 'আপেল',
         phonetics: '/ˈæpl/',
         example: 'I ate an apple.',
-        synonyms: const ['fruit'],
+        synonyms: ['fruit'],
         isSynced: true,
       );
-      when(wordDao.getByExactEnglish('apple')).thenAnswer((_) async => complete);
+      when(wordDao.getByExactEnglish('apple'))
+          .thenAnswer((_) async => complete);
       when(connectivityService.isOnline()).thenAnswer((_) async => true);
 
       final result = await repository.getWordDetails('apple');
@@ -55,9 +59,12 @@ void main() {
       verifyNever(apiService.fetchWordData(any));
     });
 
-    test('returns graceful failure when offline and word not found locally', () async {
-      when(wordDao.getByExactEnglish('unknownword')).thenAnswer((_) async => null);
-      when(wordDao.getByExactBangla('unknownword')).thenAnswer((_) async => null);
+    test('returns graceful failure when offline and word not found locally',
+        () async {
+      when(wordDao.getByExactEnglish('unknownword'))
+          .thenAnswer((_) async => null);
+      when(wordDao.getByExactBangla('unknownword'))
+          .thenAnswer((_) async => null);
       when(connectivityService.isOnline()).thenAnswer((_) async => false);
 
       final result = await repository.getWordDetails('unknownword');
@@ -70,21 +77,29 @@ void main() {
     });
 
     test('enriches incomplete local word from API when online', () async {
-      final incomplete = WordModel(id: 2, english: 'run', bangla: 'দৌড়ানো');
-      when(wordDao.getByExactEnglish('run')).thenAnswer((_) async => incomplete);
+      final incomplete =
+          const WordModel(id: 2, english: 'run', bangla: 'দৌড়ানো');
+      when(wordDao.getByExactEnglish('run'))
+          .thenAnswer((_) async => incomplete);
       when(connectivityService.isOnline()).thenAnswer((_) async => true);
-      when(apiService.fetchWordData('run')).thenAnswer((_) async => Result.success({
-            'word': 'run',
-            'phonetic': '/rʌn/',
-            'meanings': [
-              {
-                'partOfSpeech': 'verb',
-                'definitions': [
-                  {'definition': 'move fast', 'example': 'He runs daily.', 'synonyms': ['sprint'], 'antonyms': ['walk']}
+      when(apiService.fetchWordData('run'))
+          .thenAnswer((_) async => const Result.success({
+                'word': 'run',
+                'phonetic': '/rʌn/',
+                'meanings': [
+                  {
+                    'partOfSpeech': 'verb',
+                    'definitions': [
+                      {
+                        'definition': 'move fast',
+                        'example': 'He runs daily.',
+                        'synonyms': ['sprint'],
+                        'antonyms': ['walk']
+                      }
+                    ],
+                  }
                 ],
-              }
-            ],
-          }));
+              }));
       when(wordDao.updateEnrichment(any)).thenAnswer((_) async => 1);
       when(cachedApiDao.save(any)).thenAnswer((_) async {});
 
@@ -96,12 +111,15 @@ void main() {
       verify(cachedApiDao.save(any)).called(1);
     });
 
-    test('falls back to incomplete local data if API fails, rather than hard error', () async {
-      final incomplete = WordModel(id: 3, english: 'jog', bangla: 'জগিং');
-      when(wordDao.getByExactEnglish('jog')).thenAnswer((_) async => incomplete);
+    test(
+        'falls back to incomplete local data if API fails, rather than hard error',
+        () async {
+      final incomplete = const WordModel(id: 3, english: 'jog', bangla: 'জগিং');
+      when(wordDao.getByExactEnglish('jog'))
+          .thenAnswer((_) async => incomplete);
       when(connectivityService.isOnline()).thenAnswer((_) async => true);
-      when(apiService.fetchWordData('jog'))
-          .thenAnswer((_) async => const Result.failure('No internet connection.'));
+      when(apiService.fetchWordData('jog')).thenAnswer(
+          (_) async => const Result.failure('No internet connection.'));
 
       final result = await repository.getWordDetails('jog');
 

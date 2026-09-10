@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/enums/load_status.dart';
 import '../../../core/routes/app_router.dart';
 import '../../../domain/entities/category_entity.dart';
 import '../../providers/category_provider.dart';
@@ -54,7 +55,8 @@ class _CategoryWordsScreenState extends State<CategoryWordsScreen> {
                   final word = provider.categoryWords[index];
                   return WordCard(
                     word: word,
-                    onTap: () => AppRouter.openWordDetails(context, word.english),
+                    onTap: () =>
+                        AppRouter.openWordDetails(context, word.english),
                   );
                 },
               );

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import '../main_shell.dart';
+import '../../../core/enums/load_status.dart';
 import '../../../core/routes/app_router.dart';
 import '../../../domain/entities/word_entity.dart';
-import '../../providers/connectivity_provider.dart';
 import '../../providers/daily_word_provider.dart';
 import '../../providers/favorites_provider.dart';
 import '../../providers/history_provider.dart';
@@ -12,7 +12,6 @@ import '../../widgets/loading_widget.dart';
 import '../../widgets/offline_banner.dart';
 import '../../widgets/section_title.dart';
 import '../../widgets/word_card.dart';
-import '../search/search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -128,7 +127,8 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         const SectionTitle(title: 'Word of the Day'),
         switch (dailyProvider.status) {
-          LoadStatus.loading => const SizedBox(height: 100, child: LoadingWidget()),
+          LoadStatus.loading =>
+            const SizedBox(height: 100, child: LoadingWidget()),
           LoadStatus.error => const SizedBox(
               height: 80,
               child: Center(child: Text('Could not load daily word')),
@@ -170,7 +170,8 @@ class _HomeScreenState extends State<HomeScreen> {
               final entry = recent[index];
               return ActionChip(
                 label: Text(entry.query),
-                onPressed: () => AppRouter.openWordDetails(context, entry.query),
+                onPressed: () =>
+                    AppRouter.openWordDetails(context, entry.query),
               );
             },
           ),
@@ -187,11 +188,13 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         SectionTitle(
           title: 'Favorite Words',
-          actionLabel: favoritesProvider.favorites.isNotEmpty ? 'See all' : null,
+          actionLabel:
+              favoritesProvider.favorites.isNotEmpty ? 'See all' : null,
           onActionTap: () => MainShellTabController.instance?.switchToTab(2),
         ),
         switch (favoritesProvider.status) {
-          LoadStatus.loading => const SizedBox(height: 80, child: LoadingWidget()),
+          LoadStatus.loading =>
+            const SizedBox(height: 80, child: LoadingWidget()),
           LoadStatus.error => const SizedBox.shrink(),
           LoadStatus.empty => const EmptyStateWidget(
               icon: Icons.favorite_border,
@@ -205,7 +208,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.only(bottom: 8),
                     child: WordCard(
                       word: word,
-                      onTap: () => AppRouter.openWordDetails(context, word.english),
+                      onTap: () =>
+                          AppRouter.openWordDetails(context, word.english),
                     ),
                   ),
               ],
@@ -242,7 +246,8 @@ class _DailyWordCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.auto_awesome, size: 16, color: colorScheme.onPrimaryContainer),
+                Icon(Icons.auto_awesome,
+                    size: 16, color: colorScheme.onPrimaryContainer),
                 const SizedBox(width: 6),
                 Text(
                   "TODAY'S WORD",
@@ -274,7 +279,8 @@ class _DailyWordCard extends StatelessWidget {
               Text(
                 '"${word.example}"',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.onPrimaryContainer.withValues(alpha: 0.85),
+                      color: colorScheme.onPrimaryContainer
+                          .withValues(alpha: 0.85),
                       fontStyle: FontStyle.italic,
                     ),
               ),

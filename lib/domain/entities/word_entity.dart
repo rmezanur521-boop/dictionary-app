@@ -38,17 +38,7 @@ class WordEntity {
     this.searchCount = 0,
   });
 
-  /// True when this word already has enough enrichment data that
-  /// we should NOT attempt another API call for it. This single method
-  /// is the enforcement point for "never download duplicate data" at
-  /// the domain layer (schema-level enforcement is the secondary layer,
-  /// see cached_api_data.word_id UNIQUE constraint).
-  bool get isEnrichmentComplete {
-    return isSynced &&
-        (phonetics?.isNotEmpty ?? false) &&
-        (example?.isNotEmpty ?? false) &&
-        synonyms.isNotEmpty;
-  }
+  bool get isEnrichmentComplete => isSynced;
 
   WordEntity copyWith({
     int? id,

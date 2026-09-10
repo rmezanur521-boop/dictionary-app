@@ -5,14 +5,8 @@ import '../../core/constants/app_constants.dart';
 import '../../core/utils/date_utils.dart';
 import '../../domain/entities/word_entity.dart';
 import '../../domain/repositories/word_repository.dart';
+import '../../core/enums/load_status.dart';
 
-enum LoadStatus { loading, success, empty, error }
-
-/// Provides a single "Word of the Day" that stays consistent for the
-/// entire calendar day. Persists the chosen word's id in
-/// SharedPreferences keyed by date, so re-opening the app later the
-/// same day (or after a process kill) shows the identical word rather
-/// than re-randomizing.
 class DailyWordProvider extends ChangeNotifier {
   DailyWordProvider(this._wordRepository);
   final WordRepository _wordRepository;

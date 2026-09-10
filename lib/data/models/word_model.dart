@@ -1,11 +1,5 @@
 import '../../domain/entities/word_entity.dart';
 
-/// Data-layer representation of a word. Adds SQLite (map) and
-/// Free Dictionary API (json) serialization on top of [WordEntity].
-///
-/// Delimiter conventions:
-///  - synonyms/antonyms are stored in SQLite as pipe-delimited TEXT
-///    (see Step 4 schema rationale) and converted to/from List<String> here.
 class WordModel extends WordEntity {
   const WordModel({
     super.id,
@@ -25,9 +19,6 @@ class WordModel extends WordEntity {
     super.searchCount,
   });
 
-  /// Builds a [WordModel] from a raw SQLite row (Map<String, Object?>).
-  /// Optionally accepts a joined `category_name` column (from a
-  /// LEFT JOIN with categories, used by WordDao for list screens).
   factory WordModel.fromMap(Map<String, Object?> map) {
     return WordModel(
       id: map['id'] as int?,
@@ -109,12 +100,12 @@ class WordModel extends WordEntity {
       for (final def in definitions) {
         example ??= def['example'] as String?;
 
-        final defSynonyms = (def['synonyms'] as List<dynamic>? ?? [])
-            .map((e) => e.toString());
+        final defSynonyms =
+            (def['synonyms'] as List<dynamic>? ?? []).map((e) => e.toString());
         synonyms.addAll(defSynonyms);
 
-        final defAntonyms = (def['antonyms'] as List<dynamic>? ?? [])
-            .map((e) => e.toString());
+        final defAntonyms =
+            (def['antonyms'] as List<dynamic>? ?? []).map((e) => e.toString());
         antonyms.addAll(defAntonyms);
       }
 
@@ -182,7 +173,11 @@ class WordModel extends WordEntity {
 
   static List<String> _splitPipeDelimited(String? raw) {
     if (raw == null || raw.trim().isEmpty) return const [];
-    return raw.split('|').map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
+    return raw
+        .split('|')
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .toList();
   }
 
   static String? _joinPipeDelimited(List<String> values) {

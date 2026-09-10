@@ -1,3 +1,5 @@
+import 'package:sqflite/sqflite.dart';
+
 import '../../models/favorite_model.dart';
 import '../../models/word_model.dart';
 import '../database_helper.dart';
@@ -8,7 +10,8 @@ class FavoriteDao {
 
   Future<bool> isFavorite(int wordId) async {
     final db = await _dbHelper.database;
-    final rows = await db.query('favorites', where: 'word_id = ?', whereArgs: [wordId], limit: 1);
+    final rows = await db.query('favorites',
+        where: 'word_id = ?', whereArgs: [wordId], limit: 1);
     return rows.isNotEmpty;
   }
 

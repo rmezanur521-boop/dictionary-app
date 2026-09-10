@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/enums/load_status.dart';
 import '../../../core/routes/app_router.dart';
 import '../../providers/category_provider.dart';
 import '../../widgets/category_grid_item.dart';
@@ -34,7 +35,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             case LoadStatus.loading:
               return const LoadingWidget();
             case LoadStatus.error:
-              return ErrorStateWidget(message: 'Could not load categories.', onRetry: provider.loadCategories);
+              return ErrorStateWidget(
+                  message: 'Could not load categories.',
+                  onRetry: provider.loadCategories);
             case LoadStatus.empty:
               return const EmptyStateWidget(
                 icon: Icons.category_outlined,
@@ -56,7 +59,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     final category = provider.categories[index];
                     return CategoryGridItem(
                       category: category,
-                      onTap: () => AppRouter.openCategoryWords(context, category),
+                      onTap: () =>
+                          AppRouter.openCategoryWords(context, category),
                     );
                   },
                 ),

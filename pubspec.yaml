@@ -21,11 +21,12 @@ dependencies:
   provider: ^6.1.2                   # MVVM ViewModel layer (ChangeNotifier)
 
   # ── Local Persistence ────────────────────────────────────────
-  sqflite: ^2.4.1                    # SQLite engine for the 50k-word local DB
+  sqflite: ^2.4.1      
+  sqflite_common_ffi: ^2.3.4              # SQLite engine for the 50k-word local DB
   path: ^1.9.0                       # path joining for DB file location
   path_provider: ^2.1.5              # locate app documents directory (DB copy target)
   shared_preferences: ^2.3.3         # theme mode, first-run flag, last sync info
-
+                  
   # ── Networking ───────────────────────────────────────────────
   http: ^1.2.2                       # Free Dictionary API calls
   connectivity_plus: ^6.1.0          # online/offline detection (added per Step 1.3, confirmed)
@@ -54,9 +55,9 @@ flutter:
     - assets/images/app_icon.png
 
   # Uncomment if a Bangla-friendly font is added (recommended for correct Bangla glyph rendering)
-  fonts:
-    - family: NotoSansBengali
-      fonts:
-        - asset: assets/fonts/NotoSansBengali-Regular.ttf
-        - asset: assets/fonts/NotoSansBengali-Bold.ttf
-          weight: 700
+  # fonts:
+  #   - family: NotoSansBengali
+  #     fonts:
+  #       - asset: assets/fonts/NotoSansBengali-Regular.ttf
+  #       - asset: assets/fonts/NotoSansBengali-Bold.ttf
+  #         weight: 700

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../core/routes/app_router.dart';
 import '../../providers/tts_provider.dart';
 import '../../providers/word_details_provider.dart';
 import '../../widgets/error_state_widget.dart';
@@ -52,10 +51,14 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
         actions: [
           if (provider.status == DetailsStatus.success) ...[
             IconButton(
-              icon: Icon(provider.isFavorite ? Icons.favorite : Icons.favorite_border),
-              color: provider.isFavorite ? Theme.of(context).colorScheme.error : null,
+              icon: Icon(
+                  provider.isFavorite ? Icons.favorite : Icons.favorite_border),
+              color: provider.isFavorite
+                  ? Theme.of(context).colorScheme.error
+                  : null,
               tooltip: 'Toggle favorite',
-              onPressed: () => context.read<WordDetailsProvider>().toggleFavorite(),
+              onPressed: () =>
+                  context.read<WordDetailsProvider>().toggleFavorite(),
             ),
             IconButton(
               icon: const Icon(Icons.share_outlined),
@@ -81,7 +84,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
     if (word.example != null && word.example!.isNotEmpty) {
       text.write('\n\n"${word.example}"');
     }
-    SharePlus.instance.share(ShareParams(text: text.toString()));
+    Share.share(text.toString());
   }
 
   Widget _buildBody(BuildContext context, WordDetailsProvider provider) {
@@ -125,11 +128,14 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
                   const SizedBox(height: 6),
                   Row(
                     children: [
-                      if (word.partOfSpeech != null && word.partOfSpeech!.isNotEmpty)
+                      if (word.partOfSpeech != null &&
+                          word.partOfSpeech!.isNotEmpty)
                         PosChip(partOfSpeech: word.partOfSpeech!),
-                      if (word.pronunciation != null && word.pronunciation!.isNotEmpty) ...[
+                      if (word.pronunciation != null &&
+                          word.pronunciation!.isNotEmpty) ...[
                         const SizedBox(width: 8),
-                        Text(word.pronunciation!, style: theme.textTheme.bodyMedium),
+                        Text(word.pronunciation!,
+                            style: theme.textTheme.bodyMedium),
                       ],
                     ],
                   ),
@@ -167,6 +173,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
                   fontStyle: FontStyle.italic,
                 ),
               ),
+        _BanglaTtsRow(banglaText: word.bangla),
 
         // ── Example sentence ───────────────────────────────────────
         if (word.example != null && word.example!.isNotEmpty) ...[
@@ -179,11 +186,13 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
             decoration: BoxDecoration(
               color: colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(12),
-              border: Border(left: BorderSide(color: colorScheme.primary, width: 3)),
+              border: Border(
+                  left: BorderSide(color: colorScheme.primary, width: 3)),
             ),
             child: Text(
               '"${word.example}"',
-              style: theme.textTheme.bodyLarge?.copyWith(fontStyle: FontStyle.italic),
+              style: theme.textTheme.bodyLarge
+                  ?.copyWith(fontStyle: FontStyle.italic),
             ),
           ),
         ],
@@ -225,7 +234,8 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
             children: [
               Icon(Icons.label_outline, size: 16, color: colorScheme.outline),
               const SizedBox(width: 6),
-              Text('Category: ${word.categoryName}', style: theme.textTheme.bodyMedium),
+              Text('Category: ${word.categoryName}',
+                  style: theme.textTheme.bodyMedium),
             ],
           ),
         ],
@@ -246,7 +256,8 @@ class _TtsButton extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return IconButton.filledTonal(
-      icon: Icon(ttsProvider.isSpeaking ? Icons.volume_up : Icons.volume_up_outlined),
+      icon: Icon(
+          ttsProvider.isSpeaking ? Icons.volume_up : Icons.volume_up_outlined),
       color: ttsProvider.isSpeaking ? colorScheme.primary : null,
       tooltip: 'Pronounce',
       onPressed: () => context.read<TtsProvider>().speakEnglish(text),
@@ -271,9 +282,14 @@ class _BanglaTtsRow extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.volume_off_outlined, size: 16, color: Theme.of(context).colorScheme.outline),
+              Icon(Icons.volume_off_outlined,
+                  size: 16, color: Theme.of(context).colorScheme.outline),
               const SizedBox(width: 4),
-              Text('Bangla pronunciation unavailable', style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12)),
+              Text('Bangla pronunciation unavailable',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(fontSize: 12)),
             ],
           ),
         ),
@@ -284,16 +300,18 @@ class _BanglaTtsRow extends StatelessWidget {
       padding: const EdgeInsets.only(top: 4),
       child: TextButton.icon(
         onPressed: () => context.read<TtsProvider>().speakBangla(banglaText),
-        icon: Icon(ttsProvider.isSpeaking ? Icons.volume_up : Icons.volume_up_outlined, size: 18),
+        icon: Icon(
+            ttsProvider.isSpeaking ? Icons.volume_up : Icons.volume_up_outlined,
+            size: 18),
         label: const Text('Listen in Bangla'),
       ),
     );
   }
 }
+
 class _SyncedBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(

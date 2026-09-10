@@ -100,7 +100,7 @@ def build(csv_path: str, db_path: str) -> None:
             cur.execute(
                 """INSERT INTO words
                    (english, bangla, pronunciation, part_of_speech, example, category_id, is_synced, last_updated)
-                   VALUES (?, ?, ?, ?, ?, ?, 0, ?)""",
+                   VALUES (?, ?, ?, ?, ?, ?, 1, ?)""",
                 (
                     row["english"].strip(),
                     row["bangla"].strip(),

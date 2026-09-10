@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'app.dart';
 import 'core/services/connectivity_service.dart';
@@ -35,6 +39,18 @@ import 'presentation/providers/sync_status_provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // ── Desktop sqflite backend ───────────────────────────────────
+  // The core `sqflite` plugin only ships native implementations for
+  // Android/iOS. On Windows/Linux/macOS desktop, we swap in the FFI-based
+  // backend (sqflite_common_ffi), which talks to SQLite via a bundled
+  // native library instead of a platform MethodChannel. This must run
+  // before DatabaseHelper (or anything else) calls sqflite's
+  // openDatabase/getDatabasesPath.
+  if (!kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
+
   // ── Core singletons ──────────────────────────────────────────
   final dbHelper = DatabaseHelper.instance;
   final connectivityService = ConnectivityService();
@@ -57,32 +73,48 @@ Future<void> main() async {
     connectivityService: connectivityService,
     syncStatusService: syncStatusService,
   );
-  final FavoriteRepository favoriteRepository = FavoriteRepositoryImpl(favoriteDao);
+  final FavoriteRepository favoriteRepository =
+      FavoriteRepositoryImpl(favoriteDao);
   final HistoryRepository historyRepository = HistoryRepositoryImpl(historyDao);
-  final CategoryRepository categoryRepository = CategoryRepositoryImpl(categoryDao, wordDao);
+  final CategoryRepository categoryRepository =
+      CategoryRepositoryImpl(categoryDao, wordDao);
 
   runApp(
     MultiProvider(
       providers: [
         // Core app-wide providers
-        ChangeNotifierProvider(create: (_) => ThemeProvider()..loadSavedTheme()),
-        ChangeNotifierProvider(create: (_) => ConnectivityProvider(connectivityService)),
+        ChangeNotifierProvider(
+            create: (_) => ThemeProvider()..loadSavedTheme()),
+        ChangeNotifierProvider(
+            create: (_) => ConnectivityProvider(connectivityService)),
         ChangeNotifierProvider(create: (_) => TtsProvider(ttsService)),
-        ChangeNotifierProvider(create: (_) => SyncStatusProvider(syncStatusService)),
+        ChangeNotifierProvider(
+            create: (_) => SyncStatusProvider(syncStatusService)),
 
         // Feature providers — each depends only on a repository interface
         ChangeNotifierProvider(
-          create: (_) => SearchProvider(wordRepository: wordRepository, historyRepository: historyRepository),
+          create: (_) => SearchProvider(
+              wordRepository: wordRepository,
+              historyRepository: historyRepository),
         ),
         ChangeNotifierProvider(
-          create: (_) => WordDetailsProvider(wordRepository: wordRepository, favoriteRepository: favoriteRepository),
+          create: (_) => WordDetailsProvider(
+              wordRepository: wordRepository,
+              favoriteRepository: favoriteRepository),
         ),
-        ChangeNotifierProvider(create: (_) => FavoritesProvider(favoriteRepository)),
-        ChangeNotifierProvider(create: (_) => HistoryProvider(historyRepository)),
-        ChangeNotifierProvider(create: (_) => CategoryProvider(categoryRepository)),
-        ChangeNotifierProvider(create: (_) => DailyWordProvider(wordRepository)),
         ChangeNotifierProvider(
-          create: (_) => SettingsProvider(wordRepository: wordRepository, historyRepository: historyRepository, dbHelper: dbHelper),
+            create: (_) => FavoritesProvider(favoriteRepository)),
+        ChangeNotifierProvider(
+            create: (_) => HistoryProvider(historyRepository)),
+        ChangeNotifierProvider(
+            create: (_) => CategoryProvider(categoryRepository)),
+        ChangeNotifierProvider(
+            create: (_) => DailyWordProvider(wordRepository)),
+        ChangeNotifierProvider(
+          create: (_) => SettingsProvider(
+              wordRepository: wordRepository,
+              historyRepository: historyRepository,
+              dbHelper: dbHelper),
         ),
       ],
       child: const DictionaryApp(),

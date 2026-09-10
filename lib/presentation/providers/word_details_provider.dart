@@ -1,6 +1,4 @@
 import 'package:flutter/foundation.dart';
-
-import '../../core/utils/result.dart';
 import '../../domain/entities/word_entity.dart';
 import '../../domain/repositories/favorite_repository.dart';
 import '../../domain/repositories/word_repository.dart';

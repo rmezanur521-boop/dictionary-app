@@ -1,12 +1,8 @@
-/// A lightweight Success/Failure wrapper so repository methods never
-/// force callers into try/catch for expected failure paths (no
-/// internet, word not found, API error). Unexpected programmer errors
-/// still throw normally and are caught at the Provider boundary.
 sealed class Result<T> {
   const Result();
-
-  factory Result.success(T data) = Success<T>;
-  factory Result.failure(String message, {Object? cause}) = FailureResult<T>;
+  const factory Result.success(T data) = Success<T>;
+  const factory Result.failure(String message, {Object? cause}) =
+      FailureResult<T>;
 
   R when<R>({
     required R Function(T data) success,

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
@@ -5,7 +6,7 @@ import 'app_colors.dart';
 class AppTheme {
   AppTheme._();
 
-  static const String _fontFamily = 'NotoSansBengali';
+  static const String? _fontFamily = null;
 
   static ThemeData light() {
     final colorScheme = ColorScheme.fromSeed(
@@ -29,7 +30,6 @@ class AppTheme {
       colorScheme: colorScheme,
       fontFamily: _fontFamily,
       scaffoldBackgroundColor: colorScheme.surface,
-
       appBarTheme: AppBarTheme(
         backgroundColor: colorScheme.surface,
         foregroundColor: colorScheme.onSurface,
@@ -43,7 +43,6 @@ class AppTheme {
           color: colorScheme.onSurface,
         ),
       ),
-
       cardTheme: CardThemeData(
         elevation: 0,
         color: colorScheme.surfaceContainerLow,
@@ -52,19 +51,19 @@ class AppTheme {
         ),
         margin: EdgeInsets.zero,
       ),
-
       chipTheme: ChipThemeData(
         backgroundColor: colorScheme.secondaryContainer,
-        labelStyle: TextStyle(color: colorScheme.onSecondaryContainer, fontSize: 13),
+        labelStyle:
+            TextStyle(color: colorScheme.onSecondaryContainer, fontSize: 13),
         side: BorderSide.none,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       ),
-
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: colorScheme.surfaceContainerHighest,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(28),
           borderSide: BorderSide.none,
@@ -79,22 +78,21 @@ class AppTheme {
         ),
         hintStyle: TextStyle(color: colorScheme.onSurfaceVariant),
       ),
-
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
       ),
-
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
       ),
-
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: colorScheme.surfaceContainer,
         indicatorColor: colorScheme.secondaryContainer,
@@ -105,28 +103,26 @@ class AppTheme {
           return TextStyle(
             fontSize: 12,
             fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
-            color: selected ? colorScheme.onSecondaryContainer : colorScheme.onSurfaceVariant,
+            color: selected
+                ? colorScheme.onSecondaryContainer
+                : colorScheme.onSurfaceVariant,
           );
         }),
       ),
-
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: colorScheme.primaryContainer,
         foregroundColor: colorScheme.onPrimaryContainer,
         elevation: 1,
       ),
-
       dividerTheme: DividerThemeData(
         color: colorScheme.outlineVariant,
         thickness: 0.6,
         space: 1,
       ),
-
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
-
       textTheme: _buildTextTheme(colorScheme),
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: {

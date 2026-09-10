@@ -1,5 +1,4 @@
 import '../../models/history_model.dart';
-import '../../models/word_model.dart';
 import '../database_helper.dart';
 
 class HistoryDao {
